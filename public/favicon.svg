@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <path id="marklogM" d="M16 96 L16 24 L39 24 L60 56 L81 24 L104 24 L104 96 L82 96 L82 58 L67 82 L53 82 L38 58 L38 96 Z"/>
+  </defs>
+  <g transform="translate(140 140) scale(6.2)">
+    <use href="#marklogM" fill="#151a1f"/>
+    <use href="#marklogM" fill="#35aaa0" transform="translate(0 120) scale(1 -1)"/>
+    <path fill="#287a73" d="M16 24 H39 V96 H16 Z M82 24 H104 V96 H82 Z M38 62 L53 38 H67 L82 62 L67 86 H53 Z"/>
+  </g>
+</svg>

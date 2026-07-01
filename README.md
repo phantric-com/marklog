@@ -1,6 +1,6 @@
-# Marklog Local
+# Marklog
 
-Marklog Local is a local-first planning document archive server. It is meant to be shared as source code on GitHub, then cloned and run on a user's own machine.
+Marklog is a local-first planning document archive server. It is meant to be shared as source code on GitHub, then cloned and run on a user's own machine.
 
 This is not a hosted deployment target. Humans use the browser to view and comment. AI agents use the API to create document packages, publish local Git revisions, and push when a project repository has a configured remote.
 
@@ -129,7 +129,7 @@ pnpm start:lan
 AI-facing CLI examples:
 
 ```sh
-pnpm marklog -- create-project --name "Marklog Local" --description "Local planning document knowledge base"
+pnpm marklog -- create-project --name "Marklog" --description "Local planning document knowledge base"
 pnpm marklog -- list-projects
 pnpm marklog -- create-doc --project <id> --title "PRD" --path prd --source-file ./prd.html
 pnpm marklog -- publish-doc --project <id> --path prd --source-file ./prd.html --message "Initial PRD"
@@ -144,19 +144,19 @@ pnpm marklog -- push --project <id> --remote origin --branch main
 2. Create a project:
 
 ```sh
-pnpm marklog -- create-project --name "Marklog Local"
+pnpm marklog -- create-project --name "Marklog"
 ```
 
 3. Use the returned project `id` to create a document package:
 
 ```sh
-pnpm marklog -- create-doc --project <id> --title "Marklog Local PRD" --path prd/marklog-local --source-file ./prd.html
+pnpm marklog -- create-doc --project <id> --title "Marklog PRD" --path prd/marklog --source-file ./prd.html
 ```
 
 4. Publish the package after the HTML is ready:
 
 ```sh
-pnpm marklog -- publish-doc --project <id> --path prd/marklog-local --source-file ./prd.html --message "Initial PRD"
+pnpm marklog -- publish-doc --project <id> --path prd/marklog --source-file ./prd.html --message "Initial PRD"
 ```
 
 5. Open `/projects/{projectId}` in the browser. Humans should use the viewer, history, diff, QR sharing, and comments. AI agents should use the CLI/API for creation, publishing, reindexing, comment export, and push.
