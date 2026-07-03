@@ -42,6 +42,37 @@ describe("Marklog API", () => {
     await fs.rm(rootDir, { recursive: true, force: true });
   });
 
+  it("keeps API routes as JSON when Vite dev middleware is enabled", async () => {
+    await app.close();
+    app = await createApp({ configDir, devServer: true, staticDir: null });
+
+    const statusResponse = await app.inject({
+      method: "GET",
+      url: "/api/workspace/status",
+      headers: { accept: "application/json" }
+    });
+    expect(statusResponse.statusCode).toBe(200);
+    expect(statusResponse.headers["content-type"]).toContain("application/json");
+    expect(statusResponse.json<WorkspaceStatus>().initialized).toBe(false);
+
+    const missingApiResponse = await app.inject({
+      method: "GET",
+      url: "/api/not-found",
+      headers: { accept: "text/html" }
+    });
+    expect(missingApiResponse.statusCode).toBe(404);
+    expect(missingApiResponse.headers["content-type"]).toContain("application/json");
+
+    const appResponse = await app.inject({
+      method: "GET",
+      url: "/",
+      headers: { accept: "text/html" }
+    });
+    expect(appResponse.statusCode).toBe(200);
+    expect(appResponse.headers["content-type"]).toContain("text/html");
+    expect(appResponse.payload).toContain("/src/client/main.tsx");
+  });
+
   it("runs the MVP document publishing flow", async () => {
     const statusBefore = await injectJson<WorkspaceStatus>("GET", "/api/workspace/status");
     expect(statusBefore.initialized).toBe(false);

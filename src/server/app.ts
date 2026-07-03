@@ -101,12 +101,21 @@ export async function createApp(options: CreateAppOptions = {}): Promise<Fastify
     const { createServer } = await import("vite");
     const vite = await createServer({
       server: { middlewareMode: true },
-      appType: "spa"
+      appType: "custom"
     });
     app.addHook("onClose", async () => {
       await vite.close();
     });
     app.use(vite.middlewares);
+    app.setNotFoundHandler(async (request, reply) => {
+      if (!request.url.startsWith("/api/") && acceptsHtml(request.headers.accept)) {
+        const template = await fs.readFile(path.resolve(__dirname, "../../index.html"), "utf8");
+        const html = await vite.transformIndexHtml(request.url, template);
+        void reply.type("text/html; charset=utf-8").send(html);
+        return;
+      }
+      void reply.status(404).send({ error: "Not found" } satisfies ApiError);
+    });
   } else if (options.staticDir !== null) {
     const staticRoot = options.staticDir ?? path.resolve(__dirname, "../client");
     await app.register(fastifyStatic, {
